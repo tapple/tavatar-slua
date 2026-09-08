@@ -1,5 +1,6 @@
 Some Lua libraries for Second Life by Tapple Gao
 
+# ChatSocket
 Only thing here at the moment is ChatSocket, a high-level IO libray between prims on the same sim. It implements flow control, and 3 types of messages:
 
 1. Iterable streams, similar to WebSocket
