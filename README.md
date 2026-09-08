@@ -1,15 +1,21 @@
-Some Lua libraries for Second Life by Tapple Gao
+Some Lua libraries for Second Life by Tapple Gao. The only thing here at the moment is ChatSocket
 
 # ChatSocket
-Only thing here at the moment is ChatSocket, a high-level IO libray between prims on the same sim. It implements flow control, and 3 types of messages:
+ChatSocket is a high-level IO libray for sending data between 2 prims on the same sim. It implements flow control, and 3 types of messages:
 
 1. Iterable streams, similar to WebSocket
 2. Remote Procedure calls (wait for a response)
 3. Notify (RPC but discard the response)
 
-It is entirely async and implements flow control, so you don't have to worry about overwhelming the destination prim's event queue. The amount of in-flight messages to allow is specified by the `bufferSize` parameter of `ChatSocket.connect`
+It is entirely async (must be run in a coroutine) and implements flow control, so you don't have to worry about overwhelming the destination prim's event queue. The number of in-flight messages to send without a reply is configurable by the `bufferSize` parameter of `ChatSocket.connect`
 
-There are 2 simple example scripts in examples, that make use of all it's features to compare 2 prim's inventories, and send any missing items from sender to receiver.
+There are 2 simple example scripts in examples, that make use of all it's features to compare 2 prim's inventories, and send any missing items from sender to receiver:
+1. Rez an empty collector prim and add `inventory-audit-receiver.luau`
+2. Rez all the prims who's inventories you want to compare. They need to be full perm.
+3. Drop `inventory-audit-sender.luau` into each prim in turn.
+4. The collector prim now contains all the de-duplicated items from the senders
+5. Chat log tells you which prims had mismatched inventory.
+
 
 API:
 ```luau
