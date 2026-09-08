@@ -17,57 +17,74 @@ There are 2 simple example scripts in examples, that make use of all it's featur
 5. Chat log tells you which prims had mismatched inventory.
 
 
-API:
+## API:
 ```luau
 local ChatSocket = require("@tavatar/ChatSocket")
 ChatSocket.connect(id: uuid, channel: number?, bufferSize: number?): Socket
--- Establish a 2-way connection.
--- If channel is nil, a random channel will be chosen.
--- `bufferSize` specifies how many unacknowledged messages the socket allows to be in flight at once. Default is 20.
--- In other words, how many entries of the remote script's 64-entry event queue to claim for this socket.
--- This "buffer" is not directly managed by this script; it is the remote script's event queue.
+```
+- Establish a 2-way connection.
+- If channel is nil, a random channel will be chosen.
+- `bufferSize` specifies how many unacknowledged messages the socket allows to be in flight at once. Default is 20.
+- In other words, how many entries of the remote script's 64-entry event queue to claim for this socket.
+- This "buffer" is not directly managed by this script; it is the remote script's event queue.
 
------- Socket ------
+### Socket
+```luau
 local socket = ChatSocket.connect(...)
 socket:remoteFunction(endpoint: string, func: (...any) -> ...any, arg1: any?): ()
--- register the given function to receive rpc or notify messages
+```
+
+register the given function to receive rpc or notify messages
+```luau
 socket:call(endpoint: string, ...): ...
--- call a registered remoteFunction on the other prim, wait for the response, and return the result
+```
+call a registered remoteFunction on the other prim, wait for the response, and return the result
+```luau
 socket:notify(endpoint: string, ...): ()
--- call a registered remoteFunction on the other prim. The remote prim will not send a response, and this call will not wait for it. notify can still block due to flow control
+```
+call a registered remoteFunction on the other prim. The remote prim will not send a response, and this call will not wait for it. notify can still block due to flow control
+```luau
 socket:openStream(channel: string): Stream<any>
--- Open a named data stream between the two prims
+```
+Open a named data stream between the two prims
+```luau
 socket:close()
 socket:waitUntilClosed()
+```
 
------- Stream ------
+### Streams
 
---[[ Streams are the main reason this library exists. They abstract away the pattern I find myself using all the time of:
+Streams are the main reason this library exists. They abstract away the pattern I find myself using all the time of:
 1. create as much data as fits in a 1024 byte ll.RegionSayTo message
 2. send the message
 3. repeat until all data is sent
 
 ChatSocket Streams take care of that
---]]
 
--- Receiver side:
+Receiver side:
+```luau
 local stream = socket:openStream<string, uuid>("streamName")
 for name, id in stream do
     -- do processing
     -- The loop will yield when no data is yet available,
     -- and exit when the remote side calls stream:close()
 end
+```
 
--- Sender side:
+Sender side:
+```luau
 local stream = socket:openStream<string, uuid>("streamName")
 for i = 1, 10 do
     stream:send("hello", NULL_KEY)
 end
 stream:close() -- don't forget this. It lets the remote for loop exit
-
--- Sender also has
-stream:flush() -- if you need to send unsent data now rather than when ll.RegionSayTo has enough data
 ```
+
+Sender also has
+```luau
+stream:flush()
+```
+if you need to send unsent data now rather than when ll.RegionSayTo has enough data
 
 TODO:
 - implement a timeout that closes the socket after a message has been unacknowledged for some time
