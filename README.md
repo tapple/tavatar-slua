@@ -11,13 +11,14 @@ It is entirely async (must be run in a coroutine) and implements flow control, s
 
 Caveat: all data sent over a ChatSocket must be serializable by [`lljson.slencode`](https://suzanna-linn.github.io/slua/moving-lljson).
 
-There are 2 simple example scripts in examples, that make use of all it's features to compare 2 prim's inventories, and send any missing items from sender to receiver:
+In [examples](examples), is a pair of scripts that make use of all of ChatSocket's features to compare 2 prim's inventories, and send any missing items from sender to receiver:
 1. Rez an empty collector prim and add [`inventory-audit-receiver.luau`](examples/inventory-audit-receiver.luau)
 2. Rez all the prims who's inventories you want to compare. They need to be full perm.
 3. Drop [`inventory-audit-sender.luau`](examples/inventory-audit-sender.luau) into each prim in turn.
 4. The collector prim now contains all the de-duplicated items from the senders
 5. Chat log tells you which prims had mismatched inventory.
 
+Note: to actually run the scripts, you may want to grab the compiled version out of [examples-compiled](examples-compiled), as you currently need [sl-vscode-plugin](https://github.com/secondlife/sl-vscode-plugin) in order to use `require()` during Lua beta.
 
 ## API:
 ```luau
