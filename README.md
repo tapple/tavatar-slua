@@ -1,13 +1,13 @@
 Some Lua libraries for Second Life by Tapple Gao. The only thing here at the moment is ChatSocket
 
 # ChatSocket
-[ChatSocket](lib/ChatSocket.luau) is a high-level high-speed IO libray for sending data between 2 prims on the same sim, using `ll.RegionSayTo`. It implements flow control, and 3 types of messages:
+[ChatSocket](lib/ChatSocket.luau) is a high-level high-speed IO libray for sending bulk data between 2 prims on the same region, using `ll.RegionSayTo`. It implements flow control, and 3 types of messages:
 
 1. Iterable streams, similar to WebSocket (it's name inspiration)
-2. Remote Procedure calls (wait for a response)
-3. Notify (RPC but discard the response)
+2. Remote procedure calls (RPC; this waits for a response)
+3. Notify (like RPC but don't wait for the response)
 
-It is entirely async (must be run in a coroutine) and implements flow control, so you don't have to worry about overwhelming the destination prim's event queue. The number of in-flight messages to send without a reply is configurable by the `bufferSize` parameter of `ChatSocket.connect`. This allows you to send data as fast as lag will allow, without needing to be conservative and only have one in-flight message at once (I did that a lot in LSL because this is so hard to get right)
+It is entirely async (must be run in a coroutine) and implements flow control, so you don't have to worry about overwhelming the destination script's event queue. The number of in-flight messages to send without a reply is configurable by the `bufferSize` parameter of `ChatSocket.connect`. This allows you to send data as fast as lag will allow, without needing to be conservative and limiting yourself to one in-flight message at once (I did that a lot in LSL because this is so hard to get right without coroutines)
 
 Caveat: all data sent over a ChatSocket must be serializable by [`lljson.slencode`](https://suzanna-linn.github.io/slua/moving-lljson).
 
