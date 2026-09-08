@@ -1,7 +1,7 @@
 Some Lua libraries for Second Life by Tapple Gao. The only thing here at the moment is ChatSocket
 
 # ChatSocket
-[ChatSocket](lib/ChatSocket.luau) is a high-level high-speed IO libray for sending bulk data between 2 prims on the same region, using `ll.RegionSayTo`. It implements flow control, and 3 types of messages:
+[ChatSocket](lib/ChatSocket.luau) is a high-level high-speed IO libray for sending bulk data between 2 prims on the same region, using `lljson` over `ll.RegionSayTo`. It implements flow control, and 3 types of messages:
 
 1. Iterable streams, similar to WebSocket (it's name inspiration)
 2. Remote procedure calls (RPC; this waits for a response)
