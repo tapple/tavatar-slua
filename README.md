@@ -62,3 +62,7 @@ stream:close() -- don't forget this. It lets the remote for loop exit
 -- Sender also has
 stream:flush() -- if you need to send unsent data now rather than when ll.RegionSayTo has enough data
 ```
+
+TODO:
+- implement a timeout that closes the socket after a message has been unacknowledged for some time
+- allow RPC endpoints to be async. Currently they throw an error if you try to `coroutine.yield()`
