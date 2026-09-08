@@ -22,11 +22,15 @@ There are 2 simple example scripts in examples, that make use of all it's featur
 local ChatSocket = require("@tavatar/ChatSocket")
 ChatSocket.connect(id: uuid, channel: number?, bufferSize: number?): Socket
 ```
-- Establish a 2-way connection.
+Establish a 2-way connection.
 - If channel is nil, a random channel will be chosen.
 - `bufferSize` specifies how many unacknowledged messages the socket allows to be in flight at once. Default is 20.
-- In other words, how many entries of the remote script's 64-entry event queue to claim for this socket.
-- This "buffer" is not directly managed by this script; it is the remote script's event queue.
+  - In other words, how many entries of the remote script's 64-entry event queue to claim for this socket.
+  - This "buffer" is not directly managed by this script; it is the remote script's event queue.
+
+ChatSocket does not help you discover what nearby prims may be willing to establish a ChatSocket withh you. Handshaking is left up to the scripter, as it's very application-specific.
+
+Both prims need to set up the socket and all streams before sending any messages
 
 ### Socket
 ```luau
