@@ -9,7 +9,7 @@ Some Lua libraries for Second Life by Tapple Gao. The only thing here at the mom
 
 It is entirely async (must be run in a coroutine) and implements flow control, so you don't have to worry about overwhelming the destination prim's event queue. The number of in-flight messages to send without a reply is configurable by the `bufferSize` parameter of `ChatSocket.connect`. This allows you to send data as fast as lag will allow, without needing to be conservative and only have one in-flight message at once (I did that a lot in LSL because this is so hard to get right)
 
-Caveat: all data sent over a ChatSocket must be serializable by `lljson.slencode`.
+Caveat: all data sent over a ChatSocket must be serializable by [`lljson.slencode`](https://suzanna-linn.github.io/slua/moving-lljson).
 
 There are 2 simple example scripts in examples, that make use of all it's features to compare 2 prim's inventories, and send any missing items from sender to receiver:
 1. Rez an empty collector prim and add [`inventory-audit-receiver.luau`](examples/inventory-audit-receiver.luau)
