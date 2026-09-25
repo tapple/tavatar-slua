@@ -1,5 +1,5 @@
 --!strict
-local ChatSocket = require("../vehicle/modules/ChatSocket")
+local ChatSocket = require("@tavatar/ChatSocket")
 type Socket = ChatSocket.Socket
 type Stream<T...> = ChatSocket.Stream<T...>
 
